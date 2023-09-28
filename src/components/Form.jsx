@@ -1,8 +1,10 @@
 import { useReducer } from 'react';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
+import { useMediaQuery } from 'react-responsive';
 
 const FormComponent = () => {
+  const isMobile = useMediaQuery({ maxWidth: 767 }); // Defina o limite para dispositivos móveis
 
   const initialState = {
     nome: '',
@@ -33,62 +35,65 @@ const FormComponent = () => {
     dispatch({ type: 'RESET_FORM' });
   };
 
-  const isFormValid = formData.termosAceitos; // Verifique se o campo de termos e condições foi aceito
+  const isFormValid = formData.termosAceitos;
 
   return (
     <>
       <h1 className='text-center mt-3'>Envie sua dúvida</h1>
-      <Form className='my-4 d-flex flex-column justify-content-center align-items-center' onSubmit={handleSubmit}>
-        <Form.Group className="mb-3 w-25" controlId="formBasicPassword">
-          <Form.Label>Nome</Form.Label>
-          <Form.Control
-            type="text"
-            placeholder="Nome"
-            value={formData.nome}
-            onChange={(e) => dispatch({ type: 'SET_FIELD', field: 'nome', value: e.target.value })}
-          />
-        </Form.Group>
-        <Form.Group className="mb-3 w-25" controlId="formBasicEmail">
-          <Form.Label>Email address</Form.Label>
-          <Form.Control
-            type="email"
-            placeholder="Enter email"
-            value={formData.email}
-            onChange={(e) => dispatch({ type: 'SET_FIELD', field: 'email', value: e.target.value })}
-          />
-          <Form.Text className="text-muted"></Form.Text>
-        </Form.Group>
-        <Form.Group className="mb-3 w-25" controlId="formBasicCity">
-          <Form.Label>Cidade</Form.Label>
-          <Form.Control
-            type="text"
-            placeholder="Cidade"
-            value={formData.cidade}
-            onChange={(e) => dispatch({ type: 'SET_FIELD', field: 'cidade', value: e.target.value })}
-          />
-        </Form.Group>
-        <Form.Group className="mb-3 w-25" controlId="formBasicDuvida">
-          <Form.Label>Dúvida</Form.Label>
-          <Form.Control
-            rows={3}
-            type='text'
-            as="textarea"
-            placeholder="Dúvida"
-            value={formData.duvida}
-            onChange={(e) => dispatch({ type: 'SET_FIELD', field: 'duvida', value: e.target.value })}
-          />
-        </Form.Group>
-        <Form.Group className="mb-3 w-25" controlId="formBasicCheckbox">
-          <Form.Check
-            type="checkbox"
-            label="Concordo os termos e condições"
-            checked={formData.termosAceitos}
-            onChange={() => dispatch({ type: 'SET_FIELD', field: 'termosAceitos', value: !formData.termosAceitos })}
-          />
-        </Form.Group>
-        <Button variant="primary" type="submit" className='w-25' disabled={!isFormValid}>
-          Enviar
-        </Button>
+      <Form className='my-4' onSubmit={handleSubmit}>
+        <div className="d-flex flex-column align-items-center">
+          <Form.Group className={`mb-3 ${isMobile ? '' : 'w-25'}`} controlId="formBasicPassword">
+            <Form.Label>Nome</Form.Label>
+            <Form.Control
+              type="text"
+              placeholder="Nome"
+              value={formData.nome}
+              onChange={(e) => dispatch({ type: 'SET_FIELD', field: 'nome', value: e.target.value })}
+            />
+          </Form.Group>
+          <Form.Group className={`mb-3 ${isMobile ? '' : 'w-25'}`} controlId="formBasicEmail">
+            <Form.Label>Email address</Form.Label>
+            <Form.Control
+              type="email"
+              placeholder="Enter email"
+              value={formData.email}
+              onChange={(e) => dispatch({ type: 'SET_FIELD', field: 'email', value: e.target.value })}
+            />
+            <Form.Text className="text-muted"></Form.Text>
+          </Form.Group>
+          <Form.Group className={`mb-3 ${isMobile ? '' : 'w-25'}`} controlId="formBasicCity">
+            <Form.Label>Cidade</Form.Label>
+            <Form.Control
+              type="text"
+              placeholder="Cidade"
+              value={formData.cidade}
+              onChange={(e) => dispatch({ type: 'SET_FIELD', field: 'cidade', value: e.target.value })}
+            />
+          </Form.Group>
+          <Form.Group className={`mb-3 ${isMobile ? '' : 'w-25'}`} controlId="formBasicDuvida">
+            <Form.Label>Dúvida</Form.Label>
+            <Form.Control
+              rows={3}
+              type='text'
+              as="textarea"
+              placeholder="Dúvida"
+              required
+              value={formData.duvida}
+              onChange={(e) => dispatch({ type: 'SET_FIELD', field: 'duvida', value: e.target.value })}
+            />
+          </Form.Group>
+          <Form.Group className={`mb-3 ${isMobile ? '' : 'w-25'}`} controlId="formBasicCheckbox">
+            <Form.Check
+              type="checkbox"
+              label="Concordo com os termos e condições"
+              checked={formData.termosAceitos}
+              onChange={() => dispatch({ type: 'SET_FIELD', field: 'termosAceitos', value: !formData.termosAceitos })}
+            />
+          </Form.Group>
+          <Button variant="primary" type="submit" className='w-25' disabled={!isFormValid}>
+            Enviar
+          </Button>
+        </div>
       </Form>
     </>
   );
